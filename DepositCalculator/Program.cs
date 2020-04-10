@@ -12,40 +12,51 @@ namespace DepositCalculator
         {
             while (true)
             {
-                Console.Write(Message);
+                Console.WriteLine(Message);
                 if (double.TryParse(Console.ReadLine(), out double result))
                     return result;
-                Console.WriteLine("Некорректнй ввод данных!");
+                Console.WriteLine("Некорректный ввод данных!");
             }
         }
 
-        static double ReadIntValue(string Message)
+        static int ReadIntValue(string Message)
         {
             while (true)
             {
-                Console.Write(Message);
+                Console.WriteLine(Message);
                 if (int.TryParse(Console.ReadLine(), out int result))
                     return result;
-                Console.WriteLine("Некорректнй ввод данных!");
+                Console.WriteLine("Некорректный ввод данных!");
             }
+        }
+
+        static double InterestCounter(double Amount, double AnnumInterest, int MonthsCount)
+        {
+            double ResultAmount = Amount;
+            MonthsCount /= 12;
+            int i = 0;
+            while (i < MonthsCount)
+            {
+                ResultAmount *= AnnumInterest;
+                i++;
+            }
+            return ResultAmount;
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Введите суммы вклада.");
-            var str = Console.ReadLine();
-            ReadDoubleValue(str);
-            var AmountOfMoney = double.Parse(str);
+            var AmountOfMoney = ReadDoubleValue("Введите суммы вклада.");
 
-            Console.WriteLine("Введите годовой процент по вкладу.");
-            str = Console.ReadLine();
-            ReadDoubleValue(str);
-            var AnnumInterest = double.Parse(str);
+            var AnnumInterest = ReadDoubleValue("Введите годовой процент по вкладу.") / 100 + 1;
 
-            Console.WriteLine("Введите количество времени для вклада в месяцах.");
-            str = Console.ReadLine();
-            ReadIntValue(str);
-            var NumberOfMonths = int.Parse(str);
+            var MonthsCount = ReadIntValue("Введите количество времени для вклада в месяцах.");
+
+            var ResultAmount = InterestCounter(AmountOfMoney, AnnumInterest, MonthsCount);
+            var Income = ResultAmount - AmountOfMoney;
+            var EffectiveInterst = (ResultAmount / AmountOfMoney - 1) * 100;
+
+            Console.WriteLine("Итогоая сумма денег будет равна {0}, доход равняется {1}, эффективный процент по вкладу - {2}.", ResultAmount, Income, EffectiveInterst);
+            Console.ReadLine();
         }
     }
 }
